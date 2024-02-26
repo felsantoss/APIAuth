@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,5 +20,8 @@ app.UseSwaggerUI(c =>
 });
 
 app.MapGet("/", () => "Hello World!");
+
+// Método para criar usuário
+app.MapPost("/register", (User user) => UserDB.CreateUser(user));
 
 app.Run();
