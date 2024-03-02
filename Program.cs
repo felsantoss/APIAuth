@@ -28,7 +28,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
     options.AddPolicy("Emplooye", policy => policy.RequireRole("emplooye"));
-})
+});
 
 // Add swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -38,6 +38,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Using swagger
 app.UseSwagger();
