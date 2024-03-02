@@ -1,7 +1,16 @@
 using System.Data.Common;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var key = Encoding.ASCII.GetBytes(Settings.Secret);
+builder.Services.AddAuthentication(x => 
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+});
 
 // Add swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -21,7 +30,7 @@ app.UseSwaggerUI(c =>
 
 app.MapGet("/", () => "Hello World!");
 
-// Método para criar usuário
+// Create User
 app.MapPost("/register", (User user) => UserDB.CreateUser(user));
 
 app.Run();
