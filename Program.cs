@@ -54,4 +54,22 @@ app.MapGet("/", () => "Hello World!");
 // Create User
 app.MapPost("/register", (User user) => UserDB.CreateUser(user));
 
+app.MapPost("/login", (User model) => 
+{
+    var user = UserRepository.Get(model.Username, model.Password);
+
+    if (user == null)
+        return Results.NotFound(new {message = "Usuário ou Senha inválidos."});
+
+    var token = TokenService.GenerateToken(user);
+
+    user.Password = "";
+
+    return Results.Ok(new
+    {
+        user = user,
+        token = token
+    });
+});
+
 app.Run();
